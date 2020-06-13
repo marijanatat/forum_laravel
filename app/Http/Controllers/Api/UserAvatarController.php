@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class UserAvatarController extends Controller
 {
-    public function store(Request $request)
+    public function store()
     {
-        $request->validate([
+        request()->validate([
             'avatar' => ['required', 'image']
         ]);
 
