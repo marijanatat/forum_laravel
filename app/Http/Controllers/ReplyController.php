@@ -55,10 +55,8 @@ class ReplyController extends Controller
         request()->validate([
             'body' => [
                 'required',
-                new SpamFree
-            ]
+                new SpamFree ]
         ]);
-
         $reply->update(request(['body']));
     }
 

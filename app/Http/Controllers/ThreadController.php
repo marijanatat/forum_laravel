@@ -21,57 +21,31 @@ class ThreadController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Channel $channel, ThreadFilters $filters)
     {
         $threads = $this->getThreads($channel, $filters);
-
         /** just for test */
         // if (request()->wantsJson()) {
-        //     return $threads;
-        // }
-
+        //     return $threads;// }
         return view('threads.index', compact('threads'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         return view('threads.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request,Recaptcha $recaptcha)
-    {
-              
-        $request->validate([
-            'title' => [
-                'required',
-                new SpamFree
-            ],
-            'body' => [
-                'required',
-                new SpamFree
-            ],
-            'channel_id' => 'required|exists:channels,id',
-            'g-recaptcha-response'=>['required',$recaptcha]
-            
-        ]);
 
-       
+    public function store(Request $request, Recaptcha $recaptcha)
+    {
+        $request->validate([
+            'title' => ['required', new SpamFree],
+            'body' => ['required', new SpamFree],
+            'channel_id' => 'required|exists:channels,id',
+            'g-recaptcha-response' => ['required', $recaptcha]
+        ]);
 
         $thread = Thread::create([
             'user_id' => auth()->id(),
@@ -80,16 +54,11 @@ class ThreadController extends Controller
             'body' => request('body'),
             //'slug'=>request('title') nije vise potrebno uveden je boot u thread created
         ]);
-
         return redirect($thread->path())->with('flash', 'Your thread has been published!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function show($channel, Thread $thread)
     {
         if (auth()->check()) {
@@ -99,61 +68,42 @@ class ThreadController extends Controller
         return view('threads.show', compact('thread'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Thread $thread)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Thread $thread)
+
+    public function update($channel, Thread $thread)
     {
-        // if(request->has('locked')){
+        $this->authorize('update', $thread);
 
-        // }
-        // $this->authorize('update',$thread);
-        // $request->validate(
-        //     ['body'=>required,
-            //     'title'=>request('title')      ]
+        $data = request()->validate([
+            'title' => ['required', new SpamFree],
+            'body' => ['required', new SpamFree]
+        ]);
 
-          //  $this->update(request('body))
-        // );
+        $thread->update($data);
+        return $thread;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($channel, Thread $thread)
     {
         $this->authorize('update', $thread);
         $thread->delete();
-
         return redirect('threads');
     }
 
     protected function getThreads(Channel $channel, ThreadFilters $filters)
     {
         $threads = Thread::filter($filters);
-        
+
         if ($channel->exists) {
             $threads->where('channel_id', $channel->id);
         }
-        
-        return $threads->latest()->paginate(25);
 
+        return $threads->latest()->paginate(25);
     }
 }
