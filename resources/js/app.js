@@ -49,6 +49,7 @@ Vue.component('user-notifications', require('./components/UserNotifications.vue'
 Vue.component('avatar-form', require('./components/AvatarForm.vue').default);
 
 Vue.component('thread-view', require('./pages/Thread.vue').default);
+Vue.component('wysiwyg', require('./components/Wysiwyg.vue').default);
 
 //Vue.component('reply', require('./components/Reply.vue').default);
 //Vue.component('favorite', require('./components/Favorite.vue').default);

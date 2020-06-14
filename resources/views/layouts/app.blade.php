@@ -19,7 +19,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.2.3/trix.css">
+    
 
     <script>
         window.App = {!! json_encode([
@@ -37,6 +38,9 @@
         .heart {width:13px; margin-right: 2px; padding-bottom: 3px;}
         .ml{
             margin-left: auto ;
+        }
+        .ais-highllight>em{
+            background: yellow;font-style: normal
         }
     </style>
     @yield('header')
