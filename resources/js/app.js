@@ -7,10 +7,13 @@
 require('./bootstrap');
 
 import { turbolinksAdapterMixin } from 'vue-turbolinks';
+import InstantSearch from 'vue-instantsearch';
+
 
 let authorizations = require('./authorizations');
 
 window.Vue = require('vue');
+Vue.use(InstantSearch);
 
 // window.Vue.prototype.authorize = function(handler) {
 //     let user = window.App.user;

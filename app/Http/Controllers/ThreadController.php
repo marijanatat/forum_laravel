@@ -106,4 +106,9 @@ class ThreadController extends Controller
 
         return $threads->latest()->paginate(25);
     }
+
+    public function toSearchableArray()
+    {
+        return $this->toArray()+ ['path'=>$this->path()]; 
+    }
 }
