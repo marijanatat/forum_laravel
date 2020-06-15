@@ -151,4 +151,9 @@ class Thread extends Model
         //$this->best_reply_id=$reply->id;
         //$this->save();
     }
+
+    public function getBodyAttribute($body)
+    {
+        return \Purify::clean($body);
+    }
 }

@@ -30,7 +30,7 @@
                         </div>
                         <div class="form-group">
                             <label for="body">Body</label>
-                            <wysiwyg name="body"></wysiwyg> 
+                            <wysiwyg v-model="form.body" name="body" :value="form.body"></wysiwyg> 
                             {{-- <textarea name="body" id="body" class="form-control" rows="8" required>{{old('body')}}</textarea> --}}
                         </div>
 
