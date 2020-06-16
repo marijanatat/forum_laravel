@@ -8,12 +8,14 @@ require('./bootstrap');
 
 import { turbolinksAdapterMixin } from 'vue-turbolinks';
 import InstantSearch from 'vue-instantsearch';
+import VModal from 'vue-js-modal'
 
 
 let authorizations = require('./authorizations');
 
 window.Vue = require('vue');
 Vue.use(InstantSearch);
+Vue.use(VModal)
 
 // window.Vue.prototype.authorize = function(handler) {
 //     let user = window.App.user;
